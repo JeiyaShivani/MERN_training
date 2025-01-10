@@ -7,7 +7,7 @@ app.use(express.json());
 
 //connecting mongodb
 
-mongoose.connect("mongodb://localhost:27017/expense").then(() => {
+mongoose.connect("mongodb+srv://jeiyashivaniss:123456789js@cluster0.mhpnmts.mongodb.net/expense").then(() => {
   console.log("Connected to database");
 });
 
