@@ -25,48 +25,48 @@ const userSchema=new mongoose.Schema({
 const User=mongoose.model("User",userSchema)
 
 
-// app.post("/signup", async(req,res)=>{
-//    const {name,email,password}=req.body;
-//    try{
-//     const user=await User.findOne({email});
-//     if(user){
-//       return res.status(400).json({message:"Emal already exists"});
-//     }
-//     const hashedPassword =await bcrypt.hash(password,10);
-//     const newUser=new User({
-//       id:uuidv4(),
-//       email,
-//       name,
-//       password:hashedPassword,
-//     })
-//     await newUser.save();
-//     res.json({message:"User created successfully"});
-//    }
-//    catch(error){
-//     console.log(error)
-//     res.status(500).json({message:"Internal Server Error"});
-//    }
-// })
+app.post("/signup", async(req,res)=>{
+   const {name,email,password}=req.body;
+   try{
+    const user=await User.findOne({email});
+    if(user){
+      return res.status(400).json({message:"Emal already exists"});
+    }
+    const hashedPassword =await bcrypt.hash(password,10);
+    const newUser=new User({
+      id:uuidv4(),
+      email,
+      name,
+      password:hashedPassword,
+    })
+    await newUser.save();
+    res.json({message:"User created successfully"});
+   }
+   catch(error){
+    console.log(error)
+    res.status(500).json({message:"Internal Server Error"});
+   }
+})
 
-// app.post("/login",async(req,res)=>{
-//   const {email,password}=req.body;
-//   try{
-//     const user=await User.findOne({email});
-//     if(!user){
-//       return res.status(400).json({message:"invalid email"});
-//     }
-//     const isValidpwd=await bcrypt.compare(password,user.password)
-//     if(!isValidpwd){
-//       return res.status(400).json({message:"invalid password"});
-//     }
-//     const token=jwt.sign({id:user.id},"secret_key",{expiresIn:"1h"});
-//     res.status(200).json(token);
-//   }
-//   catch(error){
-//     console.log(error)
-//     return res.status(500).json({message:"invalid Server Error"});
-//   }
-// })
+app.post("/login",async(req,res)=>{
+  const {email,password}=req.body;
+  try{
+    const user=await User.findOne({email});
+    if(!user){
+      return res.status(400).json({message:"invalid email"});
+    }
+    const isValidpwd=await bcrypt.compare(password,user.password)
+    if(!isValidpwd){
+      return res.status(400).json({message:"invalid password"});
+    }
+    const token=jwt.sign({id:user.id},"secret_key",{expiresIn:"1h"});
+    res.status(200).json(token);
+  }
+  catch(error){
+    console.log(error)
+    return res.status(500).json({message:"invalid Server Error"});
+  }
+})
 
 
 //construction of schema
@@ -99,7 +99,7 @@ app.post("/api/expenses", async (req, res) => {
 
 //GET method creation
 
-app.get("/api/expenses", authMiddleware,async (req, res) => {
+app.get("/api/expenses",async (req, res) => {
   console.log(req.user)
   try {
     const expenses = await Expenses.find(); //this is a promise so we are using await for which the fn has to be async
