@@ -53,18 +53,18 @@ app.post("/login",async(req,res)=>{
   try{
     const user=await User.findOne({email});
     if(!user){
-      return res.status(400).json({message:"invalid email"});
+      return res.status(400).json({message:"Invalid email."});
     }
     const isValidpwd=await bcrypt.compare(password,user.password)
     if(!isValidpwd){
-      return res.status(400).json({message:"invalid password"});
+      return res.status(400).json({message:"Invalid password."});
     }
     const token=jwt.sign({id:user.id},"secret_key",{expiresIn:"1h"});
     res.status(200).json(token);
   }
   catch(error){
     console.log(error)
-    return res.status(500).json({message:"invalid Server Error"});
+    return res.status(500).json({message:"Invalid Server Error"});
   }
 })
 
@@ -110,6 +110,10 @@ app.get("/api/expenses",async (req, res) => {
 });
 
 //GET method to fetch one single id
+
+// there are two ids created the one you generated with uuidv4 and mongodb
+
+// uuid-({id}),findOne()  mongodb--(id),findById()
 app.get("/api/expenses/:id", async (req, res) => {
   try {
     const { id } = req.params;
